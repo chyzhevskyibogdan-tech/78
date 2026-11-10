@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Різдвяний Тест Настрою 🎄</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(rgba(10, 25, 47, 0.9), rgba(10, 25, 47, 0.9)), 
+                        url('https://unsplash.com') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 2px solid #b3000c;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 650px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        h1 {
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #aed8f2;
+            font-style: italic;
+            margin-bottom: 25px;
+        }
+
+        .mood-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 12px 0;
+            border-left: 4px solid #d4af37;
+            text-align: left;
+        }
+
+        .mood-card h3 {
+            margin: 0 0 6px 0;
+            color: #fff;
+        }
+
+        .input-group {
+            margin: 25px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        button {
+            background-color: #b3000c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #e60012;
+            box-shadow: 0 0 15px #e60012;
+        }
+
+        /* Вікно з результатом */
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #d4af37;
+            text-align: left;
+        }
+
+        /* Стильне вікно для коду, яке НЕ буде розтягувати екран */
+        .code-display {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-align: left;
+            white-space: pre-wrap; /* Переносить довгі рядки */
+            word-wrap: break-word;
+            max-height: 250px;
+            overflow-y: auto; /* Додає скролл, якщо код великий */
+            border: 1px solid #444;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎄 Різдвяний Тест Настрою 🎅</h1>
+    <p class="subtitle">Введи свій стан та дізнайся, який ти персонаж із нашої гри!</p>
+
+    <div id="roles-list">
+        <div class="mood-card">
+            <h3>🎅 Святий Миколай</h3>
+            <p><strong>🎒 Предмет:</strong> 🎁 Мішок з подарунками</p>
+            <p><strong>Настрій:</strong> Щедрий, святковий, хочеться ділитися радістю.</p>
+        </div>
+        <div class="mood-card">
+            <h3>👼 Ангели-помічники</h3>
+            <p><strong>🎒 Предмет:</strong> 🍬 Магічні цукерки та 🌟 Зірочки</p>
+            <p><strong>Настрій:</strong> Енергійний, веселий, хочеться танцювати.</p>
+        </div>
+        <div class="mood-card">
+            <h3>👹 Чорти</h3>
+            <p><strong>🎒 Предмет:</strong> 🌿 Різочки для бешкетників</p>
+            <p><strong>Настрій:</strong> Бешкетний, лінивий, хочеться пограти в телефоні.</p>
+        </div>
+        <div class="mood-card">
+            <h3>🌌 Чарівна Нічка</h3>
+            <p><strong>🎒 Предмет:</strong> 🎶 Прекрасний голос</p>
+            <p><strong>Настрій:</strong> Затишний, спокійний, хочеться поспати чи поспівати.</p>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="user-mood" placeholder="Наприклад: щедрий, лінивий, затишний...">
+        <button onclick="checkMood()">Визначити</button>
+    </div>
+
+    <!-- Блок результату -->
+    <div id="result" class="result-box"></div>
+</div>
+
+<script>
+    const roles = [
+        {
+            name: "Святий Миколай 🎅",
+            keywords: ["щедрий", "святковий", "добрий", "миколай"],
+            item: "🎁 Мішок з подарунками",
+            phrase: "Ти несеш людям свято та радість!"
+        },
+        {
+            name: "Ангели-помічники 👼",
+            keywords: ["енергійний", "веселий", "радісний", "ангел", "танець"],
+            item: "🍬 Магічні цукерки та 🌟 Зірочки",
+            phrase: "Твій різдвяний танець прикрасить будь-яку оселю!"
+        },
+        {
+            name: "Чорти 👹",
+            keywords: ["бешкетний", "лінивий", "хитрий", "чорт", "мобілка"],
+            item: "🌿 Різочки для бешкетників",
+            phrase: "Ой, ну ти й чортяка сьогодні! Але чорти якогось милого програли, тому відпочинь."
+        },
+        {
+            name: "Чарівна Нічка 🌌",
+            keywords: ["затишний", "спокійний", "сонний", "нічка", "голос"],
+            item: "🎶 Прекрасний голос та зоряне покривало",
+            phrase: "Твій чарівний голос заколише будь-які зимові тривоги."
+        }
+    ];
+
+    function checkMood() {
+        const input = document.getElementById('user-mood').value.trim().toLowerCase();
+        const resultBox = document.getElementById('result');
+
+        if (!input) {
+            resultBox.innerHTML = "<h3 style='color: #ff4d4d;'>❌ Введіть слово у поле!</h3>";
+            resultBox.style.display = "block";
+            return;
+        }
+
+        let matchedRole = null;
+        for (let role of roles) {
+            if (role.keywords.some(keyword => input.includes(keyword))) {
+                matchedRole = role;
+                break;
+            }
+        }
+
+        if (matchedRole) {
+            resultBox.innerHTML = `
+                <h2 style="color: #d4af37; margin-top: 0;">✨ Результат тесту:</h2>
+                <p><strong>Роль:</strong> ${matchedRole.name}</p>
+                <p><strong>🎒 Твій предмет:</strong> ${matchedRole.item}</p>
+                <p><em>"${matchedRole.phrase}"</em></p>
+            `;
+        } else {
+            resultBox.innerHTML = `
+                <h2>🧐 Настрій унікальний!</h2>
+                <p>Ти — таємний ельф-програміст. Твій настрій створює різдвяну магію коду! 💻✨</p>
+            `;
+        }
+        resultBox.style.display = "block";
+    }
+</script>
+
+</body>
+</html>
